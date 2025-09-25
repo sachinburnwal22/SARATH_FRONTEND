@@ -29,14 +29,7 @@ export default function SignIn() {
     }
   }, []);
 
-  // Redirect if already authenticated
-  useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      const next = searchParams.get("next") || "/";
-      console.log("User already authenticated, redirecting to:", next);
-      window.location.href = next;
-    }
-  }, [isAuthenticated, isLoading, searchParams]);
+  // Don't auto-redirect - let components handle authentication
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -47,6 +40,28 @@ export default function SignIn() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-sky-blue"></div>
+      </div>
+    );
+  }
+
+  // Show message if already authenticated
+  if (isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-blue/10 via-mint-green/10 to-coral-pink/10 p-6">
+        <div className="max-w-xl w-full bg-white/90 backdrop-blur rounded-3xl border-2 border-sunny-yellow/30 shadow-xl p-8 animate-fade-in-up">
+          <div className="text-center space-y-3 mb-6">
+            <h1 className="font-heading text-3xl font-bold text-gray-800">Already Logged In</h1>
+            <p className="font-body text-gray-600">You are already authenticated. You can access all features.</p>
+          </div>
+          <div className="flex items-center justify-center gap-4">
+            <button
+              onClick={() => window.location.href = '/'}
+              className="px-6 py-3 rounded-xl bg-sky-blue text-white font-medium shadow hover:shadow-md transition-all duration-300 hover:scale-[1.02]"
+            >
+              Go to Home
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
