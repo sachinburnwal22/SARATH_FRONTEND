@@ -35,8 +35,19 @@ export default function SignIn() {
     if (!isLoading && isAuthenticated && !isRedirecting) {
       const next = searchParams.get("next") || "/";
       console.log("User already authenticated, redirecting to:", next);
-      setIsRedirecting(true);
-      window.location.href = next;
+      
+      // Prevent redirect loop - if next is the same as current path, go to home
+      const currentPath = window.location.pathname;
+      const targetPath = decodeURIComponent(next);
+      
+      if (targetPath === currentPath || targetPath === "/signin") {
+        console.log("Preventing redirect loop, going to home instead");
+        setIsRedirecting(true);
+        window.location.href = "/";
+      } else {
+        setIsRedirecting(true);
+        window.location.href = next;
+      }
     }
   }, [isAuthenticated, isLoading, searchParams, isRedirecting]);
 
