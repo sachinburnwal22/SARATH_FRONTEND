@@ -42,7 +42,12 @@ export default function SignUp() {
           mobileNumber: form.mobileNumber,
           role: form.role,
         },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       );
       setError("");
       setLoading(false);
@@ -78,7 +83,12 @@ export default function SignUp() {
           email,
           role: form.role,
         },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       );
       const next = searchParams.get("next") || "/";
       router.push(next);

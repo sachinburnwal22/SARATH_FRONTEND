@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from './api-client';
 
 interface User {
   fullName: string;
@@ -28,9 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshUser = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/user/current`, {
-        withCredentials: true,
-      });
+      const response = await apiClient.get('/api/user/current');
       console.log('Refresh user successful:', response.data);
       setUser(response.data);
     } catch (error) {
@@ -41,11 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const response = await axios.post(
-        `${baseUrl}/api/auth/signin`,
-        { email, password },
-        { withCredentials: true }
-      );
+      const response = await apiClient.post('/api/auth/signin', { email, password });
       console.log('Login successful:', response.data);
       setUser(response.data);
       return true;
@@ -58,9 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     try {
       // Call backend logout
-      await axios.get(`${baseUrl}/api/auth/signout`, { 
-        withCredentials: true 
-      });
+      await apiClient.get('/api/auth/signout');
       console.log('Logout successful');
     } catch (error) {
       console.error('Logout error:', error);

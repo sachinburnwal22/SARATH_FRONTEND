@@ -29,7 +29,12 @@ export default function ForgotPassword() {
       const result = await axios.post(
         `${baseUrl}/api/auth/send-otp`,
         { email },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       );
       console.log("OTP sent:", result.data);
       setError("");
@@ -47,7 +52,12 @@ export default function ForgotPassword() {
       const result = await axios.post(
         `${baseUrl}/api/auth/verify-otp`,
         { email, otp },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       );
       console.log("OTP verified:", result.data);
       setError("");
@@ -69,7 +79,12 @@ export default function ForgotPassword() {
       const result = await axios.post(
         `${baseUrl}/api/auth/reset-password`,
         { email, newPassword },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       );
       console.log("Password reset successful:", result.data);
       setError("");

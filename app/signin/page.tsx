@@ -126,7 +126,12 @@ export default function SignIn() {
       const response = await axios.post(
         `${baseUrl}/api/auth/google-auth`,
         { fullName, email },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       );
       setError("");
       await refreshUser(); // Refresh user data in context
