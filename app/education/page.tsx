@@ -2,6 +2,7 @@
 
 import EducationDashboard from "@/components/education-dashboard"
 import FlipbookViewer from "@/components/flipbook-viewer"
+import AuthWrapper from "@/components/auth-wrapper"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from 'next/link';
@@ -127,7 +128,13 @@ export default function EducationPage() {
           </Card>
         </div>
 
-        <EducationDashboard />
+        <AuthWrapper
+          title="Access Learning Games"
+          message="Sign in to access our interactive learning games and educational content."
+          feature="learning games"
+        >
+          <EducationDashboard />
+        </AuthWrapper>
       </div>
     </div>
   )

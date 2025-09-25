@@ -4,33 +4,10 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import GameCard from "./game-card"
 import ProgressIndicator from "./progress-indicator"
-import { useAuth } from "@/lib/auth-context";
-import LoginPrompt from "./login-prompt";
 
 export default function EducationDashboard() {
-  const { isAuthenticated, isLoading } = useAuth();
   const [selectedGame, setSelectedGame] = useState(null)
   const [hasSpoken, setHasSpoken] = useState(false)
-
-  // Show loading state
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-sky-blue"></div>
-      </div>
-    );
-  }
-
-  // Show login prompt if not authenticated
-  if (!isAuthenticated) {
-    return (
-      <LoginPrompt
-        title="Access Learning Games"
-        message="Sign in to access our interactive learning games and educational content."
-        feature="learning games"
-      />
-    );
-  }
 
   const games = [
     {

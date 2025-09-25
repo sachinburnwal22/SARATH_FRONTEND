@@ -5,35 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import Link from 'next/link';
-import { useAuth } from "@/lib/auth-context";
-import LoginPrompt from "./login-prompt";
 
 export default function CommunicationInterface() {
-  const { isAuthenticated, isLoading, user } = useAuth();
   const [activeFeature, setActiveFeature] = useState(null)
   const [textInput, setTextInput] = useState("")
   const [voiceInput, setVoiceInput] = useState("")
   const [selectedIcons, setSelectedIcons] = useState([])
-
-  // Show loading state
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-sky-blue"></div>
-      </div>
-    );
-  }
-
-  // Show login prompt if not authenticated
-  if (!isAuthenticated) {
-    return (
-      <LoginPrompt
-        title="Access Communication Tools"
-        message="Sign in to access our powerful communication features designed for inclusive interaction."
-        feature="communication tools"
-      />
-    );
-  }
 
   const communicationFeatures = [
     {
