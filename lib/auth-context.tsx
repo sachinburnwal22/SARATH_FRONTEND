@@ -31,8 +31,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await axios.get(`${baseUrl}/api/user/current`, {
         withCredentials: true,
       });
+      console.log('Refresh user successful:', response.data); // Debug log
       setUser(response.data);
     } catch (error) {
+      console.error('Refresh user failed:', error); // Debug log
       setUser(null);
     }
   };
