@@ -57,14 +57,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     try {
+      // Call backend logout
       await axios.get(`${baseUrl}/api/auth/signout`, { 
         withCredentials: true 
       });
+      console.log('Logout successful');
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
+      // Always clear local state
       setUser(null);
-      // Clear any local storage or cookies if needed
+      
+      // Force redirect to home page
       if (typeof window !== 'undefined') {
         window.location.href = '/';
       }
