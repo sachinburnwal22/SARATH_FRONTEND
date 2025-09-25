@@ -23,10 +23,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(false);
+  const [lastAuthCheck, setLastAuthCheck] = useState<number>(0);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
   const refreshUser = async () => {
+    const now = Date.now();
+    // Prevent calls more frequent than every 5 seconds
+    if (isCheckingAuth || (now - lastAuthCheck < 5000)) return;
+    
+    setIsCheckingAuth(true);
+    setLastAuthCheck(now);
     try {
       const response = await apiClient.get('/api/user/current');
       console.log('Refresh user successful:', response.data);
@@ -34,6 +42,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (error) {
       console.error('Refresh user failed:', error);
       setUser(null);
+    } finally {
+      setIsCheckingAuth(false);
     }
   };
 
@@ -68,13 +78,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    let isMounted = true;
+    
     const checkAuth = async () => {
+      if (!isMounted) return;
+      
       setIsLoading(true);
-      await refreshUser();
-      setIsLoading(false);
+      try {
+        await refreshUser();
+      } catch (error) {
+        console.error('Auth check failed:', error);
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
     };
 
     checkAuth();
+    
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const value = {
