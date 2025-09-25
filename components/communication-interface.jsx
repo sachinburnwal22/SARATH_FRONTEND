@@ -9,13 +9,11 @@ import { useAuth } from "@/lib/auth-context";
 import LoginPrompt from "./login-prompt";
 
 export default function CommunicationInterface() {
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const [activeFeature, setActiveFeature] = useState(null)
   const [textInput, setTextInput] = useState("")
   const [voiceInput, setVoiceInput] = useState("")
   const [selectedIcons, setSelectedIcons] = useState([])
-
-  console.log('CommunicationInterface - Auth state:', { isAuthenticated, isLoading, user }); // Debug log
 
   // Show loading state
   if (isLoading) {
@@ -28,7 +26,6 @@ export default function CommunicationInterface() {
 
   // Show login prompt if not authenticated
   if (!isAuthenticated) {
-    console.log('CommunicationInterface - Showing login prompt'); // Debug log
     return (
       <LoginPrompt
         title="Access Communication Tools"
@@ -37,8 +34,6 @@ export default function CommunicationInterface() {
       />
     );
   }
-
-  console.log('CommunicationInterface - Showing content'); // Debug log
 
   const communicationFeatures = [
     {

@@ -22,7 +22,6 @@ export default function SignIn() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentUrl, setCurrentUrl] = useState("");
-  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -32,19 +31,12 @@ export default function SignIn() {
 
   // Redirect if already authenticated
   useEffect(() => {
-    if (!isLoading && isAuthenticated && !isRedirecting) {
+    if (!isLoading && isAuthenticated) {
       const next = searchParams.get("next") || "/";
       console.log("User already authenticated, redirecting to:", next);
-      setIsRedirecting(true);
-      
-      // Use window.location.href for more reliable redirect in production
-      if (typeof window !== 'undefined') {
-        window.location.href = next;
-      } else {
-        router.push(next);
-      }
+      window.location.href = next;
     }
-  }, [isAuthenticated, isLoading, router, searchParams, isRedirecting]);
+  }, [isAuthenticated, isLoading, searchParams]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

@@ -31,10 +31,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await axios.get(`${baseUrl}/api/user/current`, {
         withCredentials: true,
       });
-      console.log('Refresh user successful:', response.data); // Debug log
+      console.log('Refresh user successful:', response.data);
       setUser(response.data);
     } catch (error) {
-      console.error('Refresh user failed:', error); // Debug log
+      console.error('Refresh user failed:', error);
       setUser(null);
     }
   };
@@ -46,17 +46,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         { email, password },
         { withCredentials: true }
       );
-      console.log('Login successful:', response.data); // Debug log
+      console.log('Login successful:', response.data);
       setUser(response.data);
-      
-      // Force a page refresh to ensure cookies are properly set
-      if (typeof window !== 'undefined') {
-        // Small delay to ensure state is updated
-        setTimeout(() => {
-          console.log('Login completed, user set:', response.data); // Debug log
-        }, 100);
-      }
-      
       return true;
     } catch (error) {
       console.error('Login error:', error);
