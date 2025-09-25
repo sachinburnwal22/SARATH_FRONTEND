@@ -13,7 +13,7 @@ import { useAuth } from "@/lib/auth-context";
 export default function SignIn() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { login, refreshUser } = useAuth();
+  const { login, refreshUser, isAuthenticated, isLoading } = useAuth();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -29,9 +29,27 @@ export default function SignIn() {
     }
   }, []);
 
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      const next = searchParams.get("next") || "/";
+      console.log("User already authenticated, redirecting to:", next);
+      router.push(next);
+    }
+  }, [isAuthenticated, isLoading, router, searchParams]);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  // Show loading while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-sky-blue"></div>
+      </div>
+    );
+  }
 
   // Normal Signin
   const handleSubmit = async (e) => {
@@ -43,21 +61,23 @@ export default function SignIn() {
         setError("");
         // Get the next parameter from URL
         const next = searchParams.get("next") || "/";
-        console.log("Redirecting to:", next); // Debug log
+        console.log("Login successful, redirecting to:", next); // Debug log
         
-        // Use window.location.href for more reliable redirect
-        if (typeof window !== 'undefined') {
-          window.location.href = next;
-        } else {
-          router.push(next);
-        }
+        // Add a small delay to ensure auth state is updated
+        setTimeout(() => {
+          if (typeof window !== 'undefined') {
+            window.location.href = next;
+          } else {
+            router.push(next);
+          }
+        }, 100);
       } else {
         setError("Invalid email or password");
+        setLoading(false);
       }
     } catch (err) {
       console.error("Sign in error:", err);
       setError("Sign in failed. Please try again.");
-    } finally {
       setLoading(false);
     }
   };
