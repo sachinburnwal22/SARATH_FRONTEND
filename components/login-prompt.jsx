@@ -13,15 +13,13 @@ export default function LoginPrompt({ title, message, feature }) {
   }, []);
 
   const signinUrl = useMemo(() => {
-    const authUrl = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:5173';
-    const url = new URL(`${authUrl}/signin`);
+    const url = new URL('/signin', window.location.origin);
     url.searchParams.set("next", nextPath);
     return url.toString();
   }, [nextPath]);
 
   const signupUrl = useMemo(() => {
-    const authUrl = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:5173';
-    const url = new URL(`${authUrl}/signup`);
+    const url = new URL('/signup', window.location.origin);
     url.searchParams.set("next", nextPath);
     return url.toString();
   }, [nextPath]);

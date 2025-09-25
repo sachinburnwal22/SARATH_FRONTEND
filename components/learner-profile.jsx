@@ -7,23 +7,32 @@ import { Button } from "@/components/ui/button"
 import AchievementBadge from "./achievement-badge"
 import ProgressChart from "./progress-chart"
 import Link from "next/link";
+import { useAuth } from "@/lib/auth-context";
+import LoginPrompt from "./login-prompt";
 
 export default function LearnerProfile() {
+  const { isAuthenticated, isLoading, user } = useAuth();
   const [activeTab, setActiveTab] = useState("overview")
-  const [user, setUser] = useState(null)
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
-        const res = await axios.get(`${baseUrl}/api/user/current`, { withCredentials: true })
-        setUser(res.data)
-      } catch (err) {
-        setUser(null)
-      }
-    }
-    fetchUser()
-  }, [])
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-sky-blue"></div>
+      </div>
+    );
+  }
+
+  // Show login prompt if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <LoginPrompt
+        title="Access Your Profile"
+        message="Sign in to view your learning progress, achievements, and personalized dashboard."
+        feature="profile"
+      />
+    );
+  }
 
   const learnerData = {
     name: user?.fullName || "Learner",
