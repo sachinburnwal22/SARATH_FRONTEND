@@ -1,16 +1,16 @@
 "use client";
 
 import React from "react";
-import { Settings, Bell, User, Shield, Palette, Globe } from "lucide-react";
+import { Settings as SettingsIcon, Bell, User, Shield, Palette, Globe } from "lucide-react";
 
-export default function Settings() {
+export default function SettingsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-blue/10 via-mint-green/10 to-coral-pink/10 p-6">
       <div className="container mx-auto max-w-4xl">
         <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8">
           <div className="flex items-center space-x-3 mb-8">
             <div className="w-12 h-12 bg-mint-green/20 rounded-full flex items-center justify-center">
-              <Settings className="w-6 h-6 text-mint-green" />
+              <SettingsIcon className="w-6 h-6 text-mint-green" />
             </div>
             <h1 className="text-3xl font-heading font-bold text-gray-800">
               Settings
